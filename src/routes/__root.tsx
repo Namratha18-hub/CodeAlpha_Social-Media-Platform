@@ -112,9 +112,17 @@ function RootShell({ children }: { children: React.ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useEffect(() => {
+    try {
+      const t = localStorage.getItem("theme");
+      if (t === "dark") document.documentElement.classList.add("dark");
+    } catch {}
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
+      <Toaster position="top-center" richColors />
     </QueryClientProvider>
   );
 }
