@@ -44,8 +44,8 @@ function Settings() {
     const { error } = await supabase.storage.from("media").upload(path, file, { upsert: true, contentType: file.type });
     if (error) { toast.error(error.message); return; }
     const url = supabase.storage.from("media").getPublicUrl(path).data.publicUrl;
-    const field = kind === "avatar" ? "avatar_url" : "cover_url";
-    await supabase.from("profiles").update({ [field]: url }).eq("id", user.id);
+    const update = kind === "avatar" ? { avatar_url: url } : { cover_url: url };
+    await supabase.from("profiles").update(update).eq("id", user.id);
     reloadProfile();
     toast.success(`${kind === "avatar" ? "Avatar" : "Cover"} updated`);
   }
